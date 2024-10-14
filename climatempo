@@ -1,0 +1,96 @@
+HTML
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clima ao Vivo</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Clima ao Vivo 🌍</h1>
+        <input type="text" id="city" placeholder="Digite o nome da cidade">
+        <button onclick="getWeather()">Buscar Clima</button>
+
+        <div id="weather-info">
+            <h2 id="city-name"></h2>
+            <p id="temperature"></p>
+            <p id="description"></p>
+            <p id="humidity"></p>
+            <p id="wind-speed"></p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+CSS
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f8ff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    text-align: center;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+input {
+    padding: 10px;
+    margin-top: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+#weather-info {
+    margin-top: 20px;
+}
+
+#weather-info h2, #weather-info p {
+    margin: 5px;
+    color: #333;
+}
+
+JavaScript
+async function getWeather() {
+    const city = document.getElementById('city').value;
+    const apiKey = 'SUA_API_KEY_AQUI'; // Coloque sua chave de API aqui
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=pt_br`;
+
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+
+        document.getElementById('city-name').innerText = `Clima em ${data.name}`;
+        document.getElementById('temperature').innerText = `Temperatura: ${data.main.temp}°C`;
+        document.getElementById('description').innerText = `Descrição: ${data.weather[0].description}`;
+        document.getElementById('humidity').innerText = `Umidade: ${data.main.humidity}%`;
+        document.getElementById('wind-speed').innerText = `Velocidade do vento: ${data.wind.speed} km/h`;
+    } catch (error) {
+        alert("Cidade não encontrada, tente novamente.");
+    }
+}
